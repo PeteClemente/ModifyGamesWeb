@@ -1,0 +1,453 @@
+/* ================================================================
+   HOME PAGE STYLES — index.html
+   ================================================================ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   HERO SECTION
+   Edit hero text in index.html inside <!-- HERO TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 24px 100px;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(91, 141, 238, 0.1);
+  border: 1px solid rgba(91, 141, 238, 0.3);
+  border-radius: 99px;
+  padding: 6px 18px;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 45%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.hero-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.hero p {
+  max-width: 560px;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-bottom: 44px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Animated scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+.scroll-hint::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--muted), transparent);
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   GAMES SECTION
+   Edit game text in index.html inside <!-- GAMES SECTION -->
+   ════════════════════════════════════════════════════════════════ */
+
+.games-section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 0;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+
+/* Individual game card */
+.game-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.game-card:hover {
+  border-color: rgba(91, 141, 238, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Game card visual area ── */
+.game-visual {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Graviscape: blue-purple space gradient */
+.game-visual--graviscape {
+  background: linear-gradient(135deg, #0b1830 0%, #1a0a2e 60%, #0a1a2e 100%);
+}
+
+/* Adventura: dark earth/dirt gradient */
+.game-visual--adventura {
+  background: linear-gradient(135deg, #160c00 0%, #2d1a05 50%, #1e1005 100%);
+}
+
+/* Limited Space: dark teal void gradient */
+.game-visual--limitedspace {
+  background: linear-gradient(135deg, #001518 0%, #002530 50%, #001018 100%);
+}
+
+/* ── Graviscape: floating planet with orbiting ship ── */
+.planet-wrap {
+  position: relative;
+  width: 110px;
+  height: 110px;
+}
+
+.planet {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #5b8dee, #1a1060 60%, #080420);
+  box-shadow: 0 0 40px rgba(91, 141, 238, 0.45), inset -14px -8px 20px rgba(0, 0, 0, 0.6);
+  animation: float 5s ease-in-out infinite;
+}
+
+.planet-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(72deg);
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 10px solid rgba(167, 123, 255, 0.28);
+}
+
+.ship-orbit {
+  position: absolute;
+  font-size: 1.1rem;
+  animation: orbit 6s linear infinite;
+  transform-origin: 0 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(82px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(82px) rotate(-360deg); }
+}
+
+/* ── Adventura: layered dig-dug terrain with bouncing explorer ── */
+.dig-scene {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.dig-layer { height: 25%; }
+.dig-layer:nth-child(1) { background: #160c00; }
+.dig-layer:nth-child(2) { background: #2a1705; }
+.dig-layer:nth-child(3) { background: #3a2008; }
+.dig-layer:nth-child(4) { background: #472608; }
+
+.dig-char {
+  position: absolute;
+  font-size: 2rem;
+  bottom: 28%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: digBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes digBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* ── Limited Space: small ship drifting in a confined box ── */
+.space-box {
+  width: 110px;
+  height: 110px;
+  border: 1px solid rgba(0, 210, 220, 0.35);
+  border-radius: 8px;
+  background: rgba(0, 20, 25, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 210, 220, 0.12), inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.space-ship {
+  font-size: 1.8rem;
+  animation: drift 3.5s ease-in-out infinite;
+}
+
+.space-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(0, 210, 220, 0.6);
+  border-radius: 50%;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0,   0)   rotate(-10deg); }
+  33%       { transform: translate(12px, -12px) rotate(8deg);  }
+  66%       { transform: translate(-10px, 10px) rotate(-5deg); }
+}
+
+/* ── Game card text content ── */
+.game-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.game-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.game-status {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+
+.game-status--soon {
+  color: var(--accent2);
+  background: rgba(167, 123, 255, 0.12);
+  border: 1px solid rgba(167, 123, 255, 0.25);
+}
+
+.game-desc {
+  font-size: 0.87rem;
+  line-height: 1.7;
+  color: var(--muted);
+  flex: 1;
+}
+
+.game-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 3px 9px;
+}
+
+.game-footer {
+  padding-top: 16px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Disabled / coming soon button variant */
+.btn-coming-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: default;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   ABOUT TEASER SECTION
+   Edit text in index.html inside <!-- ABOUT TEASER TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.about-teaser {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+}
+
+.about-teaser-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.about-teaser-text p {
+  font-size: 0.97rem;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 16px;
+  margin-bottom: 28px;
+}
+
+/* Mission statement pull-quote */
+.mission-quote {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 28px 32px;
+}
+
+.mission-quote p {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 14px;
+}
+
+.mission-quote blockquote {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-style: italic;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   FINAL CALL-TO-ACTION BANNER
+   Edit text in index.html inside <!-- CTA TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.cta-section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0 120px;
+}
+
+.cta-banner {
+  background: linear-gradient(135deg, rgba(91, 141, 238, 0.1), rgba(167, 123, 255, 0.1));
+  border: 1px solid rgba(91, 141, 238, 0.2);
+  border-radius: 24px;
+  padding: 80px 48px;
+  text-align: center;
+}
+
+.cta-banner h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.cta-banner p {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 36px;
+  line-height: 1.75;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 960px) {
+  .games-grid         { grid-template-columns: 1fr 1fr; }
+  .about-teaser-inner { grid-template-columns: 1fr; padding: 40px; gap: 36px; }
+}
+
+@media (max-width: 600px) {
+  .games-grid  { grid-template-columns: 1fr; }
+  .cta-banner  { padding: 48px 24px; }
+}

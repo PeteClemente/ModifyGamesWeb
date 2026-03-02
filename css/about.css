@@ -1,0 +1,224 @@
+/* ================================================================
+   ABOUT PAGE STYLES — about.html
+   ================================================================ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   PAGE HERO
+   Edit text in about.html inside <!-- ABOUT HERO TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.about-hero {
+  position: relative;
+  z-index: 1;
+  padding: 160px 0 80px;
+  text-align: center;
+}
+
+.about-hero h1 {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+
+.about-hero p {
+  max-width: 560px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   MISSION SECTION
+   Edit text in about.html inside <!-- MISSION TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.mission-section {
+  position: relative;
+  z-index: 1;
+  padding: 60px 0;
+}
+
+.mission-card {
+  background: linear-gradient(135deg, rgba(91, 141, 238, 0.09), rgba(167, 123, 255, 0.07));
+  border: 1px solid rgba(91, 141, 238, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 64px;
+  text-align: center;
+}
+
+.mission-card .section-eyebrow {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mission-statement {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height: 1.85;
+  color: var(--text);
+  max-width: 760px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   OUR STORY SECTION
+   Edit text in about.html inside <!-- STORY TEXT -->
+   ════════════════════════════════════════════════════════════════ */
+
+.story-section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+}
+
+.story-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+
+.story-text p {
+  font-size: 0.97rem;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.story-text p:last-child { margin-bottom: 0; }
+
+/* Values cards on the right column */
+.story-values {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.value-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  transition: border-color 0.3s, transform 0.2s;
+}
+
+.value-card:hover {
+  border-color: rgba(91, 141, 238, 0.35);
+  transform: translateX(4px);
+}
+
+.value-card h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.value-card p {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   TEAM SECTION
+   Edit team members in about.html inside <!-- TEAM MEMBERS -->
+   ════════════════════════════════════════════════════════════════ */
+
+.team-section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0 120px;
+}
+
+.team-intro {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 16px auto 52px;
+  text-align: center;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 24px;
+  text-align: center;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.team-card:hover {
+  border-color: rgba(91, 141, 238, 0.35);
+  transform: translateY(-4px);
+}
+
+/* Avatar circle */
+.team-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 18px;
+}
+
+/* Different gradient per card */
+.team-avatar--1 { background: linear-gradient(135deg, var(--accent), #3a6bcf); }
+.team-avatar--2 { background: linear-gradient(135deg, var(--accent2), #7a50d0); }
+.team-avatar--3 { background: linear-gradient(135deg, #00c9b8, #0085a1); }
+
+.team-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.team-role {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.team-bio {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .mission-card { padding: 40px 28px; }
+  .story-inner  { grid-template-columns: 1fr; gap: 40px; }
+}

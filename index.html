@@ -3,637 +3,345 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ModifyGames</title>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg:        #080b12;
-      --surface:   #0e1422;
-      --accent:    #5b8dee;
-      --accent2:   #a77bff;
-      --text:      #dce6f7;
-      --muted:     #7a8fb5;
-      --steam:     #1b9ce3;
-      --radius:    12px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    /* ── STAR CANVAS ── */
-    #stars {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 48px;
-      background: rgba(8, 11, 18, 0.75);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(91, 141, 238, 0.1);
-    }
-
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: #fff;
-    }
-
-    .logo span { color: var(--accent); }
-
-    nav ul {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-
-    nav ul a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
-    }
-
-    nav ul a:hover { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-    }
-
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(91, 141, 238, 0.1);
-      border: 1px solid rgba(91, 141, 238, 0.3);
-      border-radius: 99px;
-      padding: 6px 18px;
-      margin-bottom: 28px;
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 24px;
-    }
-
-    .hero p {
-      max-width: 600px;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      color: var(--muted);
-      margin-bottom: 48px;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .btn-steam {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--steam);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 16px 36px;
-      border-radius: var(--radius);
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      box-shadow: 0 0 32px rgba(27, 156, 227, 0.4);
-    }
-
-    .btn-steam:hover {
-      background: #2ab0ff;
-      transform: translateY(-3px);
-      box-shadow: 0 0 48px rgba(27, 156, 227, 0.6);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: transparent;
-      color: var(--text);
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 16px 32px;
-      border-radius: var(--radius);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.15);
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .btn-secondary:hover {
-      border-color: rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.05);
-    }
-
-    /* Steam icon SVG */
-    .steam-icon {
-      width: 22px;
-      height: 22px;
-      fill: #fff;
-      flex-shrink: 0;
-    }
-
-    /* Scroll indicator */
-    .scroll-hint {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      animation: bob 2s ease-in-out infinite;
-    }
-
-    .scroll-hint::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--muted), transparent);
-    }
-
-    @keyframes bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(8px); }
-    }
-
-    /* ── GAME CARD ── */
-    .game-section {
-      position: relative;
-      z-index: 1;
-      padding: 100px 24px;
-    }
-
-    .section-label {
-      text-align: center;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 700;
-      margin-bottom: 60px;
-    }
-
-    .game-card {
-      max-width: 960px;
-      margin: 0 auto;
-      background: var(--surface);
-      border: 1px solid rgba(91, 141, 238, 0.15);
-      border-radius: 20px;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      box-shadow: 0 0 80px rgba(91, 141, 238, 0.08);
-    }
-
-    .game-card-visual {
-      background: linear-gradient(135deg, #0b1830 0%, #1a0a2e 50%, #0a1a2e 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 360px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Animated planet graphic */
-    .planet-wrap {
-      position: relative;
-      width: 180px;
-      height: 180px;
-    }
-
-    .planet {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #5b8dee, #1a1060 60%, #080420);
-      box-shadow: 0 0 60px rgba(91, 141, 238, 0.5), inset -20px -10px 30px rgba(0,0,0,0.6);
-      animation: float 5s ease-in-out infinite;
-    }
-
-    .planet-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotateX(72deg);
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      border: 14px solid rgba(167, 123, 255, 0.35);
-      box-shadow: 0 0 20px rgba(167, 123, 255, 0.2);
-    }
-
-    .ship {
-      position: absolute;
-      font-size: 1.6rem;
-      animation: orbit 6s linear infinite;
-      transform-origin: 0 0;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-14px); }
-    }
-
-    @keyframes orbit {
-      from { transform: rotate(0deg) translateX(130px) rotate(0deg); }
-      to   { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
-    }
-
-    .game-card-info {
-      padding: 48px 44px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .game-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      background: rgba(167, 123, 255, 0.1);
-      border: 1px solid rgba(167, 123, 255, 0.25);
-      border-radius: 99px;
-      padding: 5px 14px;
-      width: fit-content;
-    }
-
-    .game-card-info h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      line-height: 1.1;
-    }
-
-    .game-card-info p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .game-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .meta-pill {
-      font-size: 0.78rem;
-      color: var(--muted);
-      background: rgba(255,255,255,0.05);
-      border-radius: 6px;
-      padding: 4px 10px;
-    }
-
-    /* ── FEATURES ── */
-    .features-section {
-      position: relative;
-      z-index: 1;
-      padding: 80px 24px 100px;
-    }
-
-    .features-grid {
-      max-width: 960px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid rgba(91, 141, 238, 0.1);
-      border-radius: var(--radius);
-      padding: 32px 28px;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-
-    .feature-card:hover {
-      border-color: rgba(91, 141, 238, 0.35);
-      transform: translateY(-4px);
-    }
-
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-
-    .feature-card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: var(--muted);
-    }
-
-    /* ── CTA BANNER ── */
-    .cta-section {
-      position: relative;
-      z-index: 1;
-      padding: 80px 24px 120px;
-    }
-
-    .cta-banner {
-      max-width: 800px;
-      margin: 0 auto;
-      background: linear-gradient(135deg, rgba(91,141,238,0.12) 0%, rgba(167,123,255,0.12) 100%);
-      border: 1px solid rgba(91, 141, 238, 0.25);
-      border-radius: 24px;
-      padding: 64px 48px;
-      text-align: center;
-    }
-
-    .cta-banner h2 {
-      font-size: clamp(1.7rem, 4vw, 2.4rem);
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-
-    .cta-banner p {
-      font-size: 1rem;
-      color: var(--muted);
-      margin-bottom: 36px;
-      line-height: 1.7;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 32px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    footer .logo { font-size: 1rem; }
-
-    footer p {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 720px) {
-      nav { padding: 16px 24px; }
-      nav ul { display: none; }
-
-      .game-card {
-        grid-template-columns: 1fr;
-      }
-
-      .game-card-visual { min-height: 260px; }
-      .game-card-info   { padding: 32px 28px; }
-
-      .cta-banner { padding: 48px 28px; }
-
-      footer { flex-direction: column; text-align: center; }
-    }
-  </style>
+  <title>ModifyGames — Play with Purpose</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
 
-<!-- Starfield -->
+<!-- Fixed starfield background (animated by js/stars.js) -->
 <canvas id="stars"></canvas>
 
-<!-- Nav -->
+
+<!-- ============================================================
+     NAVIGATION
+     Edit nav links and logo in base.css + below
+     ============================================================ -->
 <nav>
-  <div class="logo">Modify<span>Games</span></div>
-  <ul>
-    <li><a href="#game">Games</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#cta">Get it</a></li>
-  </ul>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Modify<span>Games</span></a>
+
+    <ul class="nav-links">
+      <li><a href="#games" class="active">Games</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-highlight"><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile dropdown menu -->
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="#games">Games</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </nav>
 
-<!-- Hero -->
+
+<!-- ============================================================
+     HERO TEXT
+     Edit: eyebrow label, headline, tagline, description, buttons
+     ============================================================ -->
 <section class="hero">
-  <div class="hero-eyebrow">Indie Game Studio</div>
-  <h1>We Make<br/>Games That Feel</h1>
-  <p>ModifyGames crafts handcrafted physics-based experiences that let you think, explore, and unwind at your own pace. No timers. No pressure. Just play.</p>
+
+  <!-- Small label above headline -->
+  <span class="hero-eyebrow">Indie Game Studio</span>
+
+  <!-- Main headline -->
+  <h1>ModifyGames</h1>
+
+  <!-- Slogan / tagline -->
+  <p class="hero-tagline">Play with Purpose</p>
+
+  <!-- Supporting description -->
+  <p>
+    We craft imaginative, mechanics-driven games that challenge the mind
+    and stir the heart. Physics puzzles. Roguelike dungeons. Survival in
+    the void. All made with love.
+  </p>
+
+  <!-- Call-to-action buttons -->
   <div class="btn-group">
-    <a href="https://store.steampowered.com/app/3608000/Graviscape/" target="_blank" rel="noopener" class="btn-steam">
+    <a href="#games" class="btn-steam">
+      <!-- Steam icon SVG -->
       <svg class="steam-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.391 3.396-1.635 0-3.016-1.173-3.338-2.727L.783 15.392C2.348 20.405 6.796 24 12.027 24c6.628 0 11.99-5.362 11.99-11.99C24.017 5.363 18.628 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.455 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z"/>
       </svg>
-      Wishlist on Steam
+      See Our Games
     </a>
-    <a href="#game" class="btn-secondary">Learn more ↓</a>
+    <a href="about.html" class="btn-secondary">About Us →</a>
   </div>
-  <div class="scroll-hint">scroll</div>
+
+  <!-- Scroll indicator arrow -->
+  <a href="#games" class="scroll-hint" aria-label="Scroll down">scroll</a>
+
 </section>
 
-<!-- Game spotlight -->
-<section class="game-section" id="game">
-  <p class="section-label">Featured Game</p>
-  <h2 class="section-title">Our Latest Release</h2>
-  <div class="game-card">
-    <div class="game-card-visual">
-      <div class="planet-wrap">
-        <div class="planet"></div>
-        <div class="planet-ring"></div>
-        <span class="ship">🚀</span>
-      </div>
+
+<!-- ============================================================
+     GAMES SECTION
+     Edit individual game cards below.
+     Each game block is clearly labelled — find the game you want
+     to edit and change the title, description, tags, or links.
+     ============================================================ -->
+<section class="games-section" id="games">
+  <div class="container">
+
+    <!-- Section heading -->
+    <div class="text-center">
+      <span class="section-eyebrow">Our Games</span>
+      <h2 class="section-title">Coming Soon to Steam</h2>
+      <p class="section-subtitle">
+        Three unique worlds. One shared love of play.
+        All our games are coming to Steam — wishlist them now to stay updated.
+      </p>
     </div>
-    <div class="game-card-info">
-      <span class="game-tag">&#127760; Space &nbsp;·&nbsp; Puzzle &nbsp;·&nbsp; Chill</span>
-      <h2>Graviscape</h2>
-      <p>Pilot a small ship through strange gravitational landscapes. Use planetary gravity and your thrusters to navigate handcrafted levels — while an AI companion unravels a forgotten mystery.</p>
-      <div class="game-meta">
-        <span class="meta-pill">Physics-Based</span>
-        <span class="meta-pill">No Timers</span>
-        <span class="meta-pill">Single Player</span>
-        <span class="meta-pill">Atmospheric</span>
+
+    <!-- Games grid — 3 cards -->
+    <div class="games-grid">
+
+
+      <!-- ── GAME CARD: GRAVISCAPE ─────────────────────────────── -->
+      <div class="game-card">
+
+        <!-- Visual illustration area -->
+        <div class="game-visual game-visual--graviscape">
+          <div class="planet-wrap">
+            <div class="planet"></div>
+            <div class="planet-ring"></div>
+            <span class="ship-orbit">🚀</span>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <div class="game-header">
+            <!-- Game title -->
+            <h3 class="game-title">Graviscape</h3>
+            <!-- Status badge -->
+            <span class="game-status game-status--soon">Coming Soon</span>
+          </div>
+
+          <!-- Short description (1-3 sentences) -->
+          <p class="game-desc">
+            A chill, physics-based puzzle game where you pilot a small ship
+            through strange gravitational landscapes. Use planetary gravity
+            and thrusters to navigate handcrafted levels while an AI companion
+            unravels a forgotten mystery.
+          </p>
+
+          <!-- Genre tags -->
+          <div class="game-tags">
+            <span class="tag">Physics</span>
+            <span class="tag">Puzzle</span>
+            <span class="tag">Space</span>
+            <span class="tag">Relaxing</span>
+          </div>
+
+          <!-- Steam link — replace href with actual Steam URL -->
+          <div class="game-footer">
+            <a href="https://store.steampowered.com/app/3608000/Graviscape/"
+               target="_blank" rel="noopener" class="btn-steam">
+              <svg class="steam-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.391 3.396-1.635 0-3.016-1.173-3.338-2.727L.783 15.392C2.348 20.405 6.796 24 12.027 24c6.628 0 11.99-5.362 11.99-11.99C24.017 5.363 18.628 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.455 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z"/>
+              </svg>
+              Wishlist on Steam
+            </a>
+          </div>
+        </div>
       </div>
-      <a href="https://store.steampowered.com/app/3608000/Graviscape/" target="_blank" rel="noopener" class="btn-steam" style="margin-top:8px; width:fit-content;">
+      <!-- ── END GRAVISCAPE ──────────────────────────────────────── -->
+
+
+      <!-- ── GAME CARD: ADVENTURA ──────────────────────────────── -->
+      <div class="game-card">
+
+        <!-- Visual illustration area -->
+        <div class="game-visual game-visual--adventura">
+          <div class="dig-scene">
+            <div class="dig-layer"></div>
+            <div class="dig-layer"></div>
+            <div class="dig-layer"></div>
+            <div class="dig-layer"></div>
+            <span class="dig-char">⛏️</span>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <div class="game-header">
+            <!-- Game title -->
+            <h3 class="game-title">Adventura</h3>
+            <!-- Status badge -->
+            <span class="game-status game-status--soon">Coming Soon</span>
+          </div>
+
+          <!-- Short description (1-3 sentences) -->
+          <p class="game-desc">
+            A roguelike adventure inspired by the classics. Dig through
+            procedurally generated underground worlds, uncover hidden
+            treasures, and survive increasingly dangerous depths.
+          </p>
+
+          <!-- Genre tags -->
+          <div class="game-tags">
+            <span class="tag">Roguelike</span>
+            <span class="tag">Adventure</span>
+            <span class="tag">Dungeon</span>
+            <span class="tag">Dig</span>
+          </div>
+
+          <!-- No Steam link yet — update href and swap to btn-steam when available -->
+          <div class="game-footer">
+            <span class="btn-coming-soon">🕹️ Coming to Steam</span>
+          </div>
+        </div>
+      </div>
+      <!-- ── END ADVENTURA ───────────────────────────────────────── -->
+
+
+      <!-- ── GAME CARD: LIMITED SPACE ──────────────────────────── -->
+      <div class="game-card">
+
+        <!-- Visual illustration area -->
+        <div class="game-visual game-visual--limitedspace">
+          <div class="space-box">
+            <!-- Scattered micro-stars inside the box -->
+            <span class="space-star" style="top: 18%; left: 22%;"></span>
+            <span class="space-star" style="top: 65%; left: 75%;"></span>
+            <span class="space-star" style="top: 40%; left: 55%;"></span>
+            <span class="space-star" style="top: 80%; left: 35%;"></span>
+            <span class="space-star" style="top: 25%; left: 70%;"></span>
+            <span class="space-ship">🛸</span>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <div class="game-header">
+            <!-- Game title -->
+            <h3 class="game-title">Limited Space</h3>
+            <!-- Status badge -->
+            <span class="game-status game-status--soon">Coming Soon</span>
+          </div>
+
+          <!-- Short description (1-3 sentences) -->
+          <p class="game-desc">
+            A 2D space arcade survival game where every pixel counts.
+            Maneuver your ship through an increasingly hostile void —
+            with nowhere to run and no room for mistakes.
+          </p>
+
+          <!-- Genre tags -->
+          <div class="game-tags">
+            <span class="tag">Arcade</span>
+            <span class="tag">Survival</span>
+            <span class="tag">Space</span>
+            <span class="tag">2D</span>
+          </div>
+
+          <!-- No Steam link yet — update href and swap to btn-steam when available -->
+          <div class="game-footer">
+            <span class="btn-coming-soon">🛸 Coming to Steam</span>
+          </div>
+        </div>
+      </div>
+      <!-- ── END LIMITED SPACE ───────────────────────────────────── -->
+
+
+    </div><!-- /games-grid -->
+  </div><!-- /container -->
+</section>
+
+
+<!-- ============================================================
+     ABOUT TEASER TEXT
+     Edit the heading, body text, and mission quote below.
+     For the full About page, edit about.html.
+     ============================================================ -->
+<section class="about-teaser">
+  <div class="container">
+    <div class="about-teaser-inner">
+
+      <!-- Left column: intro text -->
+      <div class="about-teaser-text">
+        <span class="section-eyebrow">Who We Are</span>
+        <h2 class="section-title">Two Brothers.<br/>A Shared Dream.</h2>
+        <p>
+          ModifyGames is an indie studio made up of two brothers and a close-knit
+          group of friends who've spent their whole lives loving games. We're not
+          a big publisher — we're passionate makers building the games we've always
+          wanted to play.
+        </p>
+        <a href="about.html" class="btn-secondary">Meet the team →</a>
+      </div>
+
+      <!-- Right column: mission statement pull-quote -->
+      <div class="mission-quote">
+        <p>Our Mission</p>
+        <blockquote>
+          "Modify Games creates imaginative, mechanics-driven experiences that push the
+          boundaries of interactive storytelling. We craft games that challenge the mind,
+          stir the heart, and invite players to reflect, connect, and grow."
+        </blockquote>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA TEXT
+     Edit the headline, sub-text, and button label below.
+     ============================================================ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-banner">
+
+      <!-- CTA headline -->
+      <h2>Stay in the Loop</h2>
+
+      <!-- CTA supporting text -->
+      <p>
+        Our games are coming to Steam. Wishlist Graviscape now and be among
+        the first to know when we launch.
+      </p>
+
+      <!-- CTA button — links to Graviscape Steam page -->
+      <a href="https://store.steampowered.com/app/3608000/Graviscape/"
+         target="_blank" rel="noopener" class="btn-steam" style="font-size:1rem; padding:16px 40px;">
         <svg class="steam-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.391 3.396-1.635 0-3.016-1.173-3.338-2.727L.783 15.392C2.348 20.405 6.796 24 12.027 24c6.628 0 11.99-5.362 11.99-11.99C24.017 5.363 18.628 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.455 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z"/>
         </svg>
-        View on Steam
+        Wishlist Graviscape on Steam
       </a>
+
     </div>
   </div>
 </section>
 
-<!-- Features -->
-<section class="features-section" id="features">
-  <p class="section-label">Why Graviscape</p>
-  <h2 class="section-title">A Different Kind of Puzzle Game</h2>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">🪐</div>
-      <h3>Physics-Driven Exploration</h3>
-      <p>Real gravitational mechanics let you slingshot between planets and drift through space in a way that feels natural and satisfying.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🧘</div>
-      <h3>Zero Pressure Gameplay</h3>
-      <p>No timers, no scores, no fail states. Take your time, experiment, and enjoy the journey at whatever pace suits you.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🤖</div>
-      <h3>An AI Companion</h3>
-      <p>An enigmatic AI narrator guides you through a layered story about a forgotten mystery hidden across the gravitational landscape.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎨</div>
-      <h3>Handcrafted Levels</h3>
-      <p>Every level is carefully designed — colorful, psychedelic, and atmospheric. Each one a unique world to navigate and uncover.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔊</div>
-      <h3>Full Audio &amp; Narration</h3>
-      <p>Enjoy full English voice audio with subtitle support, immersing you in a cinematic, atmospheric soundscape.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💻</div>
-      <h3>Low Spec Friendly</h3>
-      <p>Runs great even on modest hardware. Requires just a GTX 750 Ti — so almost anyone can jump in and play.</p>
-    </div>
-  </div>
-</section>
 
-<!-- Final CTA -->
-<section class="cta-section" id="cta">
-  <div class="cta-banner">
-    <h2>Ready to Escape Gravity?</h2>
-    <p>Graviscape is coming soon on Steam. Wishlist it now and be the first to know when it launches.</p>
-    <a href="https://store.steampowered.com/app/3608000/Graviscape/" target="_blank" rel="noopener" class="btn-steam" style="font-size:1.05rem; padding:18px 44px;">
-      <svg class="steam-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.391 3.396-1.635 0-3.016-1.173-3.338-2.727L.783 15.392C2.348 20.405 6.796 24 12.027 24c6.628 0 11.99-5.362 11.99-11.99C24.017 5.363 18.628 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.455 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z"/>
-      </svg>
-      Wishlist Graviscape on Steam
-    </a>
-  </div>
-</section>
-
-<!-- Footer -->
+<!-- ============================================================
+     FOOTER
+     Edit links and copyright text below.
+     ============================================================ -->
 <footer>
-  <div class="logo">Modify<span>Games</span></div>
-  <p>&copy; 2026 ModifyGames. All rights reserved.</p>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">Modify<span>Games</span></a>
+    <ul class="footer-links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 ModifyGames. All rights reserved.</p>
+  </div>
 </footer>
 
-<!-- Starfield script -->
-<script>
-  const canvas = document.getElementById('stars');
-  const ctx = canvas.getContext('2d');
 
-  let stars = [];
-
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function generateStars(n) {
-    stars = [];
-    for (let i = 0; i < n; i++) {
-      stars.push({
-        x:       Math.random() * canvas.width,
-        y:       Math.random() * canvas.height,
-        r:       Math.random() * 1.4 + 0.2,
-        alpha:   Math.random() * 0.7 + 0.15,
-        speed:   Math.random() * 0.3 + 0.05,
-        twinkle: Math.random() * Math.PI * 2,
-      });
-    }
-  }
-
-  function drawStars(ts) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const s of stars) {
-      s.twinkle += s.speed * 0.015;
-      const a = s.alpha * (0.6 + 0.4 * Math.sin(s.twinkle));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(220, 230, 255, ${a})`;
-      ctx.fill();
-    }
-    requestAnimationFrame(drawStars);
-  }
-
-  window.addEventListener('resize', () => { resize(); generateStars(220); });
-  resize();
-  generateStars(220);
-  requestAnimationFrame(drawStars);
-</script>
-
+<script src="js/stars.js"></script>
+<script src="js/nav.js"></script>
 </body>
 </html>

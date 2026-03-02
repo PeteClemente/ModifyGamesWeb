@@ -1,0 +1,341 @@
+/* ================================================================
+   BASE STYLES — ModifyGames Website
+   Shared variables, reset, layout helpers, nav, footer, buttons.
+   ================================================================ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   VARIABLES — Edit colors and spacing here
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Brand colors */
+  --bg:        #080b12;      /* Page background */
+  --surface:   #0e1422;      /* Card backgrounds */
+  --surface2:  #131929;      /* Inset card backgrounds */
+  --border:    rgba(91, 141, 238, 0.15);
+  --accent:    #5b8dee;      /* Primary blue */
+  --accent2:   #a77bff;      /* Secondary purple */
+  --text:      #dce6f7;      /* Main text */
+  --muted:     #7a8fb5;      /* Secondary text */
+  --steam:     #1b9ce3;      /* Steam button blue */
+
+  /* Layout */
+  --max-width: 1100px;
+  --radius:    12px;
+  --radius-lg: 20px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   RESET
+   ════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; }
+
+
+/* ════════════════════════════════════════════════════════════════
+   LAYOUT HELPERS
+   ════════════════════════════════════════════════════════════════ */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   STAR CANVAS — Fixed background starfield (driven by js/stars.js)
+   ════════════════════════════════════════════════════════════════ */
+
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED BUTTONS
+   ════════════════════════════════════════════════════════════════ */
+
+.btn-steam {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--steam);
+  color: #fff;
+  font-size: 0.93rem;
+  font-weight: 700;
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 0 28px rgba(27, 156, 227, 0.35);
+}
+
+.btn-steam:hover {
+  background: #2ab0ff;
+  transform: translateY(-3px);
+  box-shadow: 0 0 44px rgba(27, 156, 227, 0.55);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.93rem;
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Steam SVG icon used inside buttons */
+.steam-icon {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   NAVIGATION
+   ════════════════════════════════════════════════════════════════ */
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(8, 11, 18, 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 66px;
+  padding: 0 40px;
+}
+
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--text); }
+
+/* Highlighted nav link (e.g. "Contact") */
+.nav-links .nav-highlight a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Hamburger button (mobile only) */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+/* Hamburger → X animation */
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile slide-down menu */
+.nav-mobile {
+  display: none;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  background: rgba(8, 11, 18, 0.97);
+}
+
+.nav-mobile.open { display: flex; }
+
+.nav-mobile a {
+  display: block;
+  padding: 16px 40px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-mobile a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED SECTION TYPOGRAPHY
+   ════════════════════════════════════════════════════════════════ */
+
+.section-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.75;
+}
+
+/* Center all section text */
+.text-center { text-align: center; }
+.text-center .section-subtitle { margin: 0 auto; }
+
+
+/* ════════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════════ */
+
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 36px 40px;
+}
+
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.footer-links a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.footer-copy {
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  padding-top: 20px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .nav-inner      { padding: 0 24px; }
+  .nav-links      { display: none; }
+  .nav-hamburger  { display: flex; }
+  footer          { padding: 28px 24px; }
+  .footer-inner   { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .footer-copy    { text-align: left; }
+}

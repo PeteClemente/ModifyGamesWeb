@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — ModifyGames</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+</head>
+<body>
+
+<!-- Fixed starfield background -->
+<canvas id="stars"></canvas>
+
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Modify<span>Games</span></a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#games">Games</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-highlight"><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="index.html#games">Games</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     CONTACT HERO TEXT
+     Edit: page headline and supporting description below.
+     ============================================================ -->
+<section class="contact-hero">
+  <div class="container">
+
+    <!-- Page headline -->
+    <h1>Get in Touch</h1>
+
+    <!-- Supporting description -->
+    <p>
+      Questions, feedback, bug reports, or just want to say hello?
+      We'd love to hear from you.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONTACT SECTION
+     ============================================================ -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-inner">
+
+
+      <!-- ── SIDEBAR INFO ──────────────────────────────────────────
+           Edit: contact details, topics list.
+           ──────────────────────────────────────────────────────── -->
+      <aside class="contact-sidebar">
+
+        <!-- Direct email card -->
+        <div class="contact-info-card">
+          <h3>📬 Direct Email</h3>
+          <p>
+            Prefer to email us directly?<br/>
+            Reach us at
+            <!-- Edit email address here -->
+            <a href="mailto:pete@modifygames.com">pete@modifygames.com</a>
+          </p>
+        </div>
+
+        <!-- Response time card -->
+        <div class="contact-info-card">
+          <h3>⏱️ Response Time</h3>
+          <p>
+            <!-- Edit response time expectation here -->
+            We're a small team, but we read everything.
+            Expect a reply within a few business days.
+          </p>
+        </div>
+
+        <!-- What you can ask about -->
+        <div class="contact-info-card">
+          <h3>💬 What We Can Help With</h3>
+          <div class="contact-topics">
+            <!-- Edit topic list here — add or remove items as needed -->
+            <div class="contact-topic">
+              <span class="topic-icon">🐛</span>
+              <span>Bug reports &amp; crashes</span>
+            </div>
+            <div class="contact-topic">
+              <span class="topic-icon">🎮</span>
+              <span>Game feedback &amp; suggestions</span>
+            </div>
+            <div class="contact-topic">
+              <span class="topic-icon">📰</span>
+              <span>Press &amp; business inquiries</span>
+            </div>
+            <div class="contact-topic">
+              <span class="topic-icon">❓</span>
+              <span>General questions</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+
+      <!-- ── CONTACT FORM ──────────────────────────────────────────
+           Submissions are handled by js/contact.js.
+           Email destination: pete@modifygames.com (set via Formspree).
+           See js/contact.js for setup instructions.
+           ──────────────────────────────────────────────────────── -->
+      <div class="contact-form-wrap">
+        <h2>Send Us a Message</h2>
+
+        <form id="contact-form" novalidate>
+
+          <!-- Two-column row: Name + Email -->
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="John Smith"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <!-- Category dropdown — edit the options as needed -->
+            <div class="form-group full">
+              <label for="category">Category</label>
+              <select id="category" name="category" required>
+                <option value="" disabled selected>Select a topic…</option>
+                <option value="bug">Bug Report / Technical Issue</option>
+                <option value="feedback">Game Feedback</option>
+                <option value="press">Press &amp; Business</option>
+                <option value="general">General Inquiry</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <!-- Message textarea -->
+            <div class="form-group full">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Tell us what's on your mind…"
+                required
+              ></textarea>
+            </div>
+
+          </div><!-- /form-grid -->
+
+          <!-- Submit button -->
+          <div>
+            <button type="submit" class="btn-submit" id="submit-btn">
+              Send Message
+            </button>
+          </div>
+
+          <!-- Success / error message (shown by js/contact.js) -->
+          <div id="form-feedback" class="form-feedback"></div>
+
+        </form>
+      </div>
+      <!-- ── END FORM ───────────────────────────────────────────── -->
+
+
+    </div><!-- /contact-inner -->
+  </div><!-- /container -->
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">Modify<span>Games</span></a>
+    <ul class="footer-links">
+      <li><a href="index.html#games">Games</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 ModifyGames. All rights reserved.</p>
+  </div>
+</footer>
+
+
+<script src="js/stars.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/contact.js"></script>
+</body>
+</html>

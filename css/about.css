@@ -191,6 +191,7 @@
 .team-avatar--1 { background: linear-gradient(135deg, var(--accent), #3a6bcf); }
 .team-avatar--2 { background: linear-gradient(135deg, var(--accent2), #7a50d0); }
 .team-avatar--3 { background: linear-gradient(135deg, #00c9b8, #0085a1); }
+.team-avatar--4 { background: linear-gradient(135deg, #e87a3a, #c0452a); }
 
 .team-name {
   font-size: 1.05rem;

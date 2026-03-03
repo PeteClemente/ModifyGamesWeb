@@ -39,11 +39,13 @@
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: -0.025em;
-  background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 45%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
   margin-bottom: 10px;
+}
+
+/* "Games" portion of the hero headline — matches nav logo color */
+.hero h1 .hero-games {
+  color: var(--accent);
 }
 
 .hero-tagline {
